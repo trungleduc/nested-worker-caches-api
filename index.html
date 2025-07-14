@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Nested Worker Cache API Test</title>
+  </head>
+  <body style="padding: 100px">
+    <h1>Nested Worker Cache API Test</h1>
+    <pre id="output">Waiting...</pre>
+
+    <script>
+      const output = document.getElementById("output");
+
+      const bootstrapWorker = new Worker("bootstrap.worker.js");
+
+      bootstrapWorker.onmessage = (e) => {
+        output.textContent = `Result: ${e.data}`;
+      };
+
+      bootstrapWorker.onerror = (e) => {
+        output.textContent = `Bootstrap Worker error: ${e.message}`;
+      };
+      const checkCache = async () => {
+        bootstrapWorker.postMessage("check");
+      };
+    </script>
+    <button onclick="checkCache()">check</button>
+  </body>
+</html>
